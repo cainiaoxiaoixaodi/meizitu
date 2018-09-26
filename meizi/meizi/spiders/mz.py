@@ -7,7 +7,7 @@ import scrapy
 
 class MzSpider(scrapy.Spider):
     name = 'mz'
-    allowed_domains = ['meizitu.com']
+    allowed_domains = ['meizitu.com', 'mm.chinasareview.com']
     start_urls = ['http://www.meizitu.com/a/more_1.html']
 
     def parse(self, response):
@@ -18,10 +18,14 @@ class MzSpider(scrapy.Spider):
         for div in div_list:
             # 每个套图的url
             map_url = div.a['href']
-            print(map_url)
+            # 构造套图页请求
             return scrapy.Request(map_url, callback=self.get_img_url, dont_filter=True)
 
     def get_img_url(self, response):
         item = {}  # 构造字典
-        item['data'] = response.text
-        return item
+        data = BeautifulSoup(response.text, 'lxml')
+        img_list = data.select('div > p > img')
+        for img in img_list:
+            img_url = img['src']
+            print(img_url)
+            break
