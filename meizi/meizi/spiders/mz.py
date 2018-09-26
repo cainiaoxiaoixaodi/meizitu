@@ -19,14 +19,14 @@ class MzSpider(scrapy.Spider):
             # 每个套图的url
             map_url = div.a['href']
             # 构造套图页请求
-            return scrapy.Request(map_url, callback=self.get_img_url, dont_filter=True)
+            yield scrapy.Request(map_url, callback=self.get_img_url, dont_filter=True)
 
     def get_img_url(self, response):
         data = BeautifulSoup(response.text, 'lxml')
         img_list = data.select('div > p > img')
         for img in img_list:
             # 构造图片请求
-            return scrapy.Request(img['src'], callback=self.gir_img, dont_filter=True)
+            yield scrapy.Request(img['src'], callback=self.gir_img, dont_filter=True)
 
     def gir_img(self, response):
         item = {}  # 构造字典
