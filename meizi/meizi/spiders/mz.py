@@ -8,7 +8,7 @@ import scrapy
 class MzSpider(scrapy.Spider):
     name = 'mz'
     allowed_domains = ['meizitu.com', 'mm.chinasareview.com']
-    start_urls = ['http://www.meizitu.com/a/more_1.html']
+    start_urls = ['http://www.meizitu.com/a/more_{}.html'.format(i) for i in range(1, 73)]
 
     def parse(self, response):
         # 初始化bs4
