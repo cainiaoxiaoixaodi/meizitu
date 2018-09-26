@@ -22,10 +22,14 @@ class MzSpider(scrapy.Spider):
             return scrapy.Request(map_url, callback=self.get_img_url, dont_filter=True)
 
     def get_img_url(self, response):
-        item = {}  # 构造字典
         data = BeautifulSoup(response.text, 'lxml')
         img_list = data.select('div > p > img')
         for img in img_list:
-            img_url = img['src']
-            print(img_url)
-            break
+            # 构造图片请求
+            return scrapy.Request(img['src'], callback=self.gir_img, dont_filter=True)
+
+    def gir_img(self, response):
+        item = {}  # 构造字典
+        item['img'] = response
+        item['img_type'] = response.url[-4:]
+        return item
