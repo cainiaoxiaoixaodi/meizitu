@@ -8,5 +8,6 @@
 
 class MeiziPipeline(object):
     def process_item(self, item, spider):
-        with open('1.html', 'w') as f:
+        with open('2.html', 'w') as f:
             f.write(item['data'])
+        # pass
